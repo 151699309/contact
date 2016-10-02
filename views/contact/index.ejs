@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>通讯录列表</title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+  </head>
+  <body>
+    <h1>通讯录列表</h1>
+    <button type="button" onclick="addContact()">新增</button>
+    <div ng-app="myApp" ng-controller="contactController">
+      <table class="table table-striped">
+        <tr>
+          <th>操作</th>
+          <th>姓名</th>
+          <th>电话</th>
+          <th>邮箱</th>
+          <th>备注</th>
+        </tr>
+        <tr ng-repeat="x in names">
+          <td>
+            <a href="/contact/update?id={{ x._id }}">编辑</a>
+            <a href="/contact/delete?id={{ x._id }}">删除</a>
+          </td>
+          <td>{{ x.name }}</td>
+          <td>{{ x.mobile }}</td>
+          <td>{{ x.email }}</td>
+          <td>{{ x.remark }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <script>
+      var app = angular.module('myApp', []);
+      app.controller('contactController', function($scope, $http) {
+        $http.get("/contact/list_json")
+                .success(function (response) {
+                  $scope.names = response.records;
+                });
+      });
+
+      function addContact() {
+        window.location.href = '/contact/add';
+      }
+
+    </script>
+  </body>
+</html>
